@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
-
+    use   LogsActivity,  HasApiTokens, HasFactory, Notifiable;
+    protected static $logAttributes = ['name', 'email'];
+    protected static $logFillable = true;
     /**
      * The attributes that are mass assignable.
      *
