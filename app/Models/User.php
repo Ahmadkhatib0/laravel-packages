@@ -12,8 +12,18 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class User extends Authenticatable
 {
     use   LogsActivity,  HasApiTokens, HasFactory, Notifiable;
-    protected static $logAttributes = ['name', 'email'];
+
+    protected static $ignoreChangedAttributes = ['password', 'updated_at']; //updated_at is required in 
+    // this case if you want to not track the password manipulation or any column 
+    protected static $logAttributes = ['name', 'email', 'password'];
     protected static $logFillable = true;
+    protected static $logOnlyDirty = true;
+
+    protected static $logName  = 'user';
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "You have {$eventName} user";
+    }
     /**
      * The attributes that are mass assignable.
      *
